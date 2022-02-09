@@ -1,0 +1,16 @@
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
+
+
+# Introducing th_deps is a breaking change: packages using
+# TemplateHaskell that don't provide a th_deps attribute
+# will likely break since GHC's dynamic linker will not find
+# at compile-time the libraries for the packages used in modules
+# using TH.
+# This flag helps with the transition: when set to True,
+# an empty list of th_deps (the default) will be interpreted as
+# "use the value in deps instead".
+bool_flag(
+    name = "incompatible_use_deps_on_empty_th_deps",
+    build_setting_default = True,
+    visibility = ["//visibility:public"],
+)
